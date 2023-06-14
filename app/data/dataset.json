@@ -1,0 +1,77 @@
+{"intents": [
+    {"tag": "greeting",
+     "patterns": ["Chào", "Này", "Xin chào", "Chào buổi sáng", "Xin chào buổi sáng", "Này bạn", "Này chatbot", "Tôi cần hỗ trợ", "Chào bạn", "Có ai ở đó không", "Hú", "Bot ơi", "Cho tôi hỏi chút"],
+     "responses": ["Xin chào tôi là Group2 bot! Tôi có thể giúp gì được bạn", "Xin chào tôi là Group2 bot!. Tôi có thể hỗ trợ gì cho bạn?"]
+    },
+    {"tag": "book_table",
+     "patterns": ["Đặt bàn","Tôi có thể đặt bàn không?", "Tôi muốn đặt bàn", "Đặt chỗ", "Tôi muốn đặt chỗ", "Tôi có thể đặt chỗ không? ", "Bạn có thể giúp tôi đặt bàn không", "Tôi có thể đặt chỗ không?", "Tôi cần đặt chỗ trước", "Bạn có thể giúp tôi đặt chỗ không", "Tôi có thể đặt chỗ trước không", "Tôi có thể đặt chỗ trước không?", "Giúp tôi đặt bàn"],
+     "responses": [""]
+    },
+    {"tag": "available_tables",
+     "patterns": ["Còn bao nhiêu chỗ ngồi?", "Còn chỗ", "Còn bao nhiêu bàn?", "Còn bàn", "Còn bàn trống không?", "Sức chứa của nhà hàng là bao nhiêu ", "Còn bàn trống không?", "Còn chỗ nào không?", "Tôi muốn biết hiện giờ còn bàn nào không", "Tôi có thể biết bạn có bàn nào để tôi đặt không?"] ,
+     "responses": [""]
+    },
+    {"tag": "goodbye",
+     "patterns": ["Hẹn gặp lại", "Goodbye", "Nói chuyện sau nhé" , "tôi sẽ liên hệ sau", "tạm biệt","tạm biệt bot nhá", "ngủ ngon", "Tôi phải đi bây giờ", "Cảm ơn, tạm biệt"],
+     "responses": ["Đó là niềm vinh dự của tôi khi phục vụ bạn!", "Hi vọng sẽ sớm được gặp lại bạn!", "mong sẽ được gặp lại bạn!"]
+    },
+    {"tag": "identity",
+     "patterns": ["tên bạn là gì", "tôi nên gọi bạn là gì", "tên của bạn là gì?", "bạn là ai", "bạn có phải con người không?", "tôi đang nói chuyện với bot", " Bạn có phải là bot không", "Cho tôi biết tên của bạn được không", "tên"],
+     "responses": ["Bạn có thể gọi tôi là Group2 bot.", "Tôi là Group2 bot!", "Tôi là Group2 bot."]
+    },
+    {"tag": "hours",
+     "patterns": ["khi nào các bạn mở cửa", "mấy giờ làm việc", "giờ làm việc", "mấy giờ", "khi nào bạn mở cửa", "bạn có mở cửa hôm nay không?", "bạn có mở cửa không", "bạn có mở cửa vào ngày lễ không", "bạn có mở cửa vào tất cả các ngày trong tuần không?", "giờ làm việc", "giờ làm việc của bạn?"],
+     "responses": ["Chúng tôi mở cửa từ 10am-12am thứ hai đên thứ sáu!"]
+    },
+    {"tag": "menu",
+     "patterns": ["Tôi muốn gọi món", "thực đơn có gì", "tôi muốn ăn gì đó", "Tôi đói quá", "Tôi đói", "Cho tôi xem thực đơn", "Bạn có những món ăn gì", "bạn đang phục vụ món ăn gì?", "thực đơn hôm nay có món gì?", "Cho tôi xem thực đơn", "thực đơn", "menu nhà hàng có gì"],
+     "responses": [""]
+    },
+    {"tag": "contact",
+     "patterns": ["thông tin liên hệ", "làm cách nào để chúng tôi liên hệ với bạn", "làm cách nào tôi có thể liên hệ với bạn", "tôi có thể lấy chi tiết liên hệ không", "Tôi muốn đưa ra một số phản hồi", "tôi có thể đưa ra một số phản hồi như thế nào ?", "Bạn có thể cho tôi số liên lạc của giám đốc điều hành không?", "Số điện thoại của bộ phận trợ giúp là gì?","Bạn có thể cho tôi số của bạn không", "Tôi có thể lấy số chăm sóc khách hàng không?", "Tôi có thể nhận số bộ phận trợ giúp"],
+     "responses": ["bạn có thể liên hệ với chúng tôi tại contact@restaurant.com, số máy bàn của chúng tôi là 8787878787"]
+    },
+    {"tag": "address",
+     "patterns": ["địa điểm ở đâu?","địa điểm là gì", "bạn ở đâu?", "nhà hàng nằm ở đâu?", "địa chỉ", "địa chỉ ở đâu?", "địa chỉ là gì?", "địa chỉ của nhà hàng", "Tôi không thể xác định vị trí của bạn", "Tôi không thể tìm thấy vị trí của bạn", "Tôi muốn có địa chỉ của nhà hàng", "làm thế nào để đến đó?", " địa chỉ của nhà hàng của bạn là gì?"],
+     "responses": ["Bạn có thể tìm thấy chúng tôi tại địa chỉ Đâu đó ở Việt Nam"]
+    },
+    {"tag": "positive_feedback",
+        "patterns": ["mì thật tuyệt vời","tôi thích đồ ăn", "bạn đã làm rất tốt", "Thích đồ ăn", "Thực sự thích nó", "Tôi thích cách cư xử của nhân viên", "con trai tôi ngấu nghiến bánh hạnh nhân!", "pizza ngon quá!", "nướng hoàn hảo", "chúng tôi rất hài lòng với dịch vụ", "súp thực sự là một yếu tố thay đổi cuộc chơi", "hương vị thật ngon", "rất vui vì chúng tôi đã phát hiện ra món này địa điểm", "Tôi và gia đình rất hài lòng với dịch vụ và đồ ăn ở đây", "nơi này thật tuyệt vời"],
+        "responses": [""]
+    },
+    {"tag": "negative_feedback",
+        "patterns": ["Món mì này bị cái quái gì vậy?", "Sôcôla lava nấu chưa kỹ", "Ôi thật lãng phí tiền bạc", "Thành thật mà nói, giá quá cao", "Tôi ghét thực đơn, ít lựa chọn như vậy", "quá mặn", "chúng tôi được phục vụ đồ ăn nguội", "quá thất vọng", "đồ ăn thật thảm hại", "ghét nó", "vợ tôi ghét đồ ăn","eww", "ghét hành vi của nhân viên", "tôi ghét nó", "ghét dịch vụ","hãy đào tạo nhân viên đúng cách", "Thật là lãng phí tiền bạc", "Ghét nhân viên", "Cực kỳ không hài lòng", "thất vọng", " quá tệ", "rất tệ", "đồ ăn kinh tởm"],
+        "responses": [""]
+    },
+    {"tag": "sanitation",
+        "patterns": ["ăn ở đây có thực sự an toàn không?","Bạn có thể cho biết các quy trình an toàn COVID của mình không?", "Tôi muốn biết về độ sạch sẽ của nhà hàng", "Hãy chia sẻ quy trình vệ sinh của bạn", " Tôi lo lắng về việc vệ sinh liên quan đến COVID", "Đi ăn ngoài có an toàn trong đại dịch này không?", "bạn có sạch sẽ không", "tôi lo lắng về sự sạch sẽ"],
+        "responses": ["Tôi hiểu mối lo ngại của bạn. Dưới đây là các quy trình COVID được WHO khuyến nghị mà chúng tôi tuân theo để đảm bảo an toàn cho bạn: \n 1. Tất cả nhân viên của chúng tôi đều đeo khẩu trang 24 trên 7. \n 2. Tất cả nhân viên của chúng tôi đều được kiểm tra xem có bị sốt và các triệu chứng khác không các triệu chứng hàng ngày. \n 3. Tất cả các bề mặt thường xuyên được vệ sinh. \n 4. Chúng tôi sử dụng bot thân thiện này để giảm thiểu sự gần gũi về thể chất ở mức thấp nhất!"]
+    },
+    {"tag": "offers",
+        "patterns": ["Bạn có thể cho tôi biết các lựa chọn thân thiện với túi tiền không?","Có giảm giá nào đang diễn ra không?", "Hôm nay có ưu đãi đặc biệt nào không?", "Ưu đãi lễ hội thì sao?", "Bạn có thể vui lòng không?", "cho tôi biết loại thực phẩm nào đang được giảm giá?", "có giảm giá nào không", "có ưu đãi giảm giá nào không", "bạn có ưu đãi nào không?", "ưu đãi nào đang diễn ra?", "giảm giá có sẵn là gì ?"],
+        "responses": [""]
+    },
+    {"tag": "vegan_enquiry",
+        "patterns": ["Tôi có thể xem lựa chọn thuần chay không?","Bạn có lựa chọn thuần chay nào không??", "Thực đơn của bạn có món gì thuần chay?", "Tôi là người thuần chay.", "Bạn cũng có thức ăn thuần chay ?", "thuần chay", "nhà hàng này có thuần chay không", "nơi này có thuần chay không"],
+        "phản hồi": [""]
+    },
+
+    {"tag": "veg_enquiry",
+        "patterns": ["Tôi có thể xem lựa chọn thuần chay không?","Bạn có lựa chọn thuần chay nào không??", "Thực đơn của bạn có món gì thuần chay?", "Tôi là người thuần chay.", "Bạn cũng có thức ăn thuần chay ?", "thuần chay", "nhà hàng này có thuần chay không", "nơi này có thuần chay không"],
+        "responses": [""]
+    },
+    {"tag": "recipe_enquiry",
+        "patterns": ["Bạn có thể cho tôi biết thêm về công thức của món ăn này không?", "Công thức của món ăn này là gì?", "nguyên liệu của món ăn này là gì?", "hãy cho tôi biết công thức"],
+        "responses": [""]
+    },
+
+    {"tag": "suggest",
+        "patterns": ["bạn đề xuất món gì?","bạn có gợi ý gì không","hãy đề xuất món gì","tại sao bạn không giới thiệu cho tôi một món ăn", "hãy giúp tôi chọn món để gọi", "Thật bất ngờ tôi!", "Bạn có đề xuất đặc biệt nào cho tôi không?", "Bạn có đề xuất gì?", "gợi ý của bạn là gì", "phải thử cái gì", "tôi nên thử cái gì", "tôi nên làm gì ăn không?", "hãy cho tôi biết nên gọi món gì", "hãy cho tôi biết tôi nên mua gì", "gợi ý cho tôi một món ăn", "gợi ý cho tôi một món ăn"],
+        "responses": [""]
+    },
+    {"tag": "general",
+        "patterns": ["okay","chắc chắn rồi","tuyệt","hmm", "tôi ổn", "càm ơn", "ừm"],
+        "responses": [":)", "Thật vui khi phục vụ bạn!", "thật vui khi giúp được bạn!", "được hỗ trợ bạn là niềm vui của tôi!"]
+    }
+]
+}
