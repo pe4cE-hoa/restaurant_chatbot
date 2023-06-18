@@ -1,5 +1,5 @@
 """
-Developed by Nhom2 in November, 2021
+Developed by HH
 """
 
 import json
@@ -7,37 +7,133 @@ import random
 import datetime
 import pymongo
 import uuid
+import re
+
+from bson import json_util
 
 import intent_classifier
 
-seat_count = 50
+
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client["restaurant"]
 menu_collection = db["menu"]
 feedback_collection = db["feedback"]
 bookings_collection = db["bookings"]
+table_manager = client["table_manager"]
+seat_count = 3 # chỉ số test
+seat_count_available = 0
+
 with open("data\dataset.json", encoding='utf-8') as file:
     data = json.load(file)
 
 
 def get_intent(message):
-    tag = intent_classifier.classify(message)
-    return tag
+   tag = intent_classifier.classify(message)
+   return tag
 
 '''
 Reduce seat_count variable by 1
 Generate and give customer a unique booking ID if seats available
 Write the booking_id and time of booking into Collection named bookings in restaurant database
 '''
-def book_table():
-    global seat_count
-    seat_count = seat_count - 1
+
+def check_date_booking(date):
+    """
+    date yyyy-mm-dd
+    """
+    now = datetime.datetime.now()
+    today = now.date()
+    string_date = str(date)
+    datecheck = datetime.date(*[int(i) for i in string_date.split("-")])
+    if today == datecheck:
+        return "today"
+    elif today < datecheck: 
+        return "future"
+    else:
+        return "past"
+
+def book_table_list_available(date, time1, time2):
+    """   
+    date yyyy-mm-dd
+    """
+    #query theo timenow -> available time nhap vao lon hon time hien tai
+    global seat_count_available
+    seat_count_available = 0
+    table_list_available = []
+    for i in range(seat_count):
+        table_number = "table" + str(i + 1)
+        table_number_i = table_manager[table_number]
+        query = {"date": date, 
+                "$or" : 
+                    [{"time1":{"$gte":time2}},
+                     {"time2":{"$lte":time1}}]}
+        table_doc = table_number_i.count_documents(query)
+        if table_doc == table_number_i.count_documents({"date": date}):
+            table_list_available.append(i + 1)
+            seat_count_available += 1
+    return table_list_available
+        
+        
+def available_tables_now():
+    now = datetime.datetime.now()
+    date = now.date()
+    hour = now.hour
+    table_list_available = book_table_list_available(date, hour, hour)
+    if seat_count_available > 0:
+        response = "Đang có " + str(seat_count_available) + " bàn sẵn sàng trong lúc này.\nCác bàn đó là: "
+        for i in table_list_available:
+            response += str(i) + ", "
+    else:
+        response = "Xin lỗi quý khách hiện tại nhà hàng đã hết bàn!"
+    return response
+
+def book_table(*arg):
+    success = False
+    table_list_available = book_table_list_available(*arg)
+    response = ""
+    now = datetime.datetime.now()
+    date = now.date()
+    hour_now = now.hour - 1
+    date_check = datetime.date(*[int(i) for i in arg[0].split("-")])
+    if date_check < date:
+        response = 'Bạn đang đặt khung giờ trong quá khứ ư! <(")'
+        response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
+    elif int(arg[2]) < hour_now and date_check == date:
+        response = 'Bạn đang đặt khung giờ trong đã qua trong ngày hôm nay ư! <(")'
+        response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
+    else:
+        if seat_count_available > 0:
+            response = "Bàn của bạn đã được đặt thành công." 
+            response += "\n Số bàn:" + str(table_list_available[0])
+            response += "\n Thời điểm đặt bàn: " + date_check.strftime('%Y-%m-%d')      
+            response += " Khung giờ từ " +str(arg[1]) + "h đến " +str(arg[2]) + "h"       
+            booking_doc = code_booking()
+            response += "\n Mã ID bàn của bạn: " + booking_doc["booking_id"]
+            success = True
+            #lưu vào mongodb
+            table_number = "table" + str(table_list_available[0])
+            table_number_i = table_manager[table_number]
+            table_doc = {"date":arg[0], "time1": arg[1], "time2": arg[2]}
+            table_number_i.insert_one(table_doc)
+            #relationship table and booking
+            table_doc_id = json_util.dumps(table_number_i.find({"date":arg[0], "time1": arg[1], "time2": arg[2]}
+                                                               ,{"_id": 1, "date": 0, "time1": 0 , "time2":0}))
+            
+            booking_doc["table_id"] = str(table_doc_id)
+            bookings_collection.insert_one(booking_doc)
+            
+        else:
+            response = "Xin lỗi thời gian quý khách chọn đã được đặt!"
+            response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6/18 19 21)"
+    return response, success 
+        
+        
+def code_booking():
     booking_id = str(uuid.uuid4())
     now = datetime.datetime.now()
     booking_time = now.strftime("%Y-%m-%d %H:%M:%S")
     booking_doc = {"booking_id": booking_id, "booking_time": booking_time}
-    bookings_collection.insert_one(booking_doc)
-    return booking_id
+    return booking_doc          
 
 
 def vegan_menu():
@@ -139,23 +235,61 @@ def show_menu():
     return response
 
 
+insert_date_book = False
+booking = False
+
 def generate_response(message):
-    global seat_count
-    tag = get_intent(message)
+    tag = "book_table" 
+    global seat_count_available,insert_date_book, booking
+    if not booking:
+        tag = get_intent(message)
     response = ""
+    if insert_date_book:
+        #message: yyyy-mm-dd t1 t2
+        x = re.split('\s', message)
+        date = x[0]
+        time1 = x[1]
+        time2 = x[2]
+        tag = "book_table"
+        try:
+            if not (0 <= int(time1) < int(time2) <= 24):
+                raise ValueError
+            datetime.datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+            response = 'Bạn đang nhập sai đinh dạng ngày tháng <(").'
+            response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
+            return response
+ 
     if tag != "":
         if tag == "book_table":
-
-            if seat_count > 0:
-                booking_id = book_table()
-                response = "Bàn của bạn đã được đặt thành công. Vui lòng xuất trình ID đặt chỗ này tại quầy:" + str(
-                    booking_id)
+            booking = True
+            if not insert_date_book:
+                response = "Vui lòng nhập thời điểm đặt bàn theo định dạng(năm-tháng-ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
+                insert_date_book = True
+                return response
+            
+            success = False
+            check_date = check_date_booking(date)
+            if check_date ==  "today":
+                response, success = book_table(date, time1, time2)
+                if success:
+                    response += "\n Chúc bạn dùng bữa ngon miệng. Thanks ^^"
+                    booking = False
+                    insert_date_book = False
+                
+            elif check_date == "future": 
+                response, success = book_table(date, time1, time2)
+                if success:
+                    response += "\n Hãy lưu lại mã ID để xuất trình ID tại quầy vào ngày đặt bàn. Thanks ^^"
+                    booking = False
+                    insert_date_book = False
+                
             else:
-                response = "Xin lỗi quý khách hiện tại nhà hàng đã hết bàn!"
-
+                response += '\n Chúng tôi không thể phục vụ thời gian ở quá khứ <(").'
+                response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
 
         elif tag == "available_tables":
-            response = "There are " + str(seat_count) + " table(s) available at the moment."
+            response = available_tables_now()
 
         elif tag == "veg_enquiry":
             response = veg_menu()
