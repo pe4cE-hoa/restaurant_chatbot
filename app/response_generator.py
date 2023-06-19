@@ -80,7 +80,7 @@ def available_tables_now():
     hour = now.hour
     table_list_available = book_table_list_available(date, hour, hour)
     if seat_count_available > 0:
-        response = "Đang có " + str(seat_count_available) + " bàn sẵn sàng trong lúc này.\nCác bàn đó là: "
+        response = "Đang có " + str(seat_count_available) + " bàn sẵn sàng trong lúc này. Các bàn đó là: "
         for i in table_list_available:
             response += str(i) + ", "
     else:
@@ -97,7 +97,7 @@ def book_table(*arg):
     date_check = datetime.date(*[int(i) for i in arg[0].split("-")])
     if date_check < date:
         response = 'Bạn đang đặt khung giờ trong quá khứ ư! <(")'
-        response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
+        response += "Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
     elif int(arg[2]) < hour_now and date_check == date:
         response = 'Bạn đang đặt khung giờ trong đã qua trong ngày hôm nay ư! <(")'
         response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
@@ -105,7 +105,7 @@ def book_table(*arg):
         if seat_count_available > 0:
             response = "Bàn của bạn đã được đặt thành công." 
             response += "\n Số bàn:" + str(table_list_available[0])
-            response += "\n Thời điểm đặt bàn: " + date_check.strftime('%Y-%m-%d')      
+            response += " Thời điểm đặt bàn: " + date_check.strftime('%Y-%m-%d')      
             response += " Khung giờ từ " +str(arg[1]) + "h đến " +str(arg[2]) + "h"       
             booking_doc = code_booking()
             response += "\n Mã ID bàn của bạn: " + booking_doc["booking_id"]
@@ -239,7 +239,6 @@ insert_date_book = False
 booking = False
 
 def generate_response(message):
-    tag = "book_table" 
     global seat_count_available,insert_date_book, booking
     if not booking:
         tag = get_intent(message)
@@ -259,6 +258,8 @@ def generate_response(message):
             response = 'Bạn đang nhập sai đinh dạng ngày tháng <(").'
             response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
             return response
+        finally:
+            response = "Tôi không hiểu được ý của bạn :< "
  
     if tag != "":
         if tag == "book_table":
@@ -285,7 +286,7 @@ def generate_response(message):
                     insert_date_book = False
                 
             else:
-                response += '\n Chúng tôi không thể phục vụ thời gian ở quá khứ <(").'
+                response = 'Chúng tôi không thể phục vụ thời gian ở quá khứ <(").'
                 response += "\n Vui lòng nhập thời điểm đặt bàn theo định dạng(năm/tháng/ngày giờ_đăt giờ_trả)(vd:2023-6-18 19 21)"
 
         elif tag == "available_tables":
